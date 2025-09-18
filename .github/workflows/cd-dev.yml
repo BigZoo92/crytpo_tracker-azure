@@ -1,0 +1,94 @@
+name: CD - dev (Container Apps)
+
+on:
+  push:
+    branches: ["main"]
+
+env:
+  RG: ctc-dev-rg
+  BACKEND_APP: ctc-dev-api
+  FRONTEND_APP: ctc-dev-web
+  ACR_LOGIN_SERVER: ${{ secrets.ACR_LOGIN_SERVER }}
+  IMAGE_TAG: ${{ github.sha }}
+  BACKEND_IMAGE: ${{ secrets.ACR_LOGIN_SERVER }}/ctc-backend:${{ github.sha }}
+  FRONTEND_IMAGE: ${{ secrets.ACR_LOGIN_SERVER }}/ctc-frontend:${{ github.sha }}
+
+jobs:
+  build-and-push-backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Docker login ACR
+        run: echo "${{ secrets.ACR_PASSWORD }}" | docker login ${{ env.ACR_LOGIN_SERVER }} -u "${{ secrets.ACR_USERNAME }}" --password-stdin
+
+      - name: Build backend image
+        run: |
+          docker build -t ${{ env.BACKEND_IMAGE }} .
+
+      - name: Push backend image
+        run: docker push ${{ env.BACKEND_IMAGE }}
+
+  build-and-push-frontend:
+    runs-on: ubuntu-latest
+    needs: build-and-push-backend
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Docker login ACR
+        run: echo "${{ secrets.ACR_PASSWORD }}" | docker login ${{ env.ACR_LOGIN_SERVER }} -u "${{ secrets.ACR_USERNAME }}" --password-stdin
+
+      - name: Build frontend image
+        run: |
+          docker build -t ${{ env.FRONTEND_IMAGE }} .
+
+      - name: Push frontend image
+        run: docker push ${{ env.FRONTEND_IMAGE }}
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [build-and-push-backend, build-and-push-frontend]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Azure login (SP JSON)
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Ensure containerapp extension
+        run: |
+          az extension add --name containerapp --yes || az extension update --name containerapp
+
+      # on s'assure que la Container App connaît les creds ACR (idempotent)
+      - name: Set registry on apps (idempotent)
+        run: |
+          az containerapp registry set -g ${{ env.RG }} -n ${{ env.BACKEND_APP }} \
+            --server ${{ env.ACR_LOGIN_SERVER }} --username "${{ secrets.ACR_USERNAME }}" --password "${{ secrets.ACR_PASSWORD }}"
+          az containerapp registry set -g ${{ env.RG }} -n ${{ env.FRONTEND_APP }} \
+            --server ${{ env.ACR_LOGIN_SERVER }} --username "${{ secrets.ACR_USERNAME }}" --password "${{ secrets.ACR_PASSWORD }}"
+
+      - name: Update backend revision (new image)
+        run: |
+          az containerapp update -g ${{ env.RG }} -n ${{ env.BACKEND_APP }} \
+            --image ${{ env.BACKEND_IMAGE }} \
+            --set-env-vars FROM_GITHUB_SHA=${{ github.sha }}
+
+      - name: Update frontend revision (new image)
+        run: |
+          az containerapp update -g ${{ env.RG }} -n ${{ env.FRONTEND_APP }} \
+            --image ${{ env.FRONTEND_IMAGE }} \
+            --set-env-vars FROM_GITHUB_SHA=${{ github.sha }}
+
+      - name: Show URLs
+        run: |
+          echo "Backend:"
+          az containerapp show -g ${{ env.RG }} -n ${{ env.BACKEND_APP }} --query "properties.configuration.ingress.fqdn" -o tsv
+          echo "Frontend:"
+          az containerapp show -g ${{ env.RG }} -n ${{ env.FRONTEND_APP }} --query "properties.configuration.ingress.fqdn" -o tsv
