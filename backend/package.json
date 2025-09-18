@@ -3,15 +3,16 @@
   "private": true,
   "version": "0.1.0",
   "scripts": {
-    "build": "tsc && shx cp -r src/functions dist/functions && shx cp host.json dist/host.json",
+    "build": "tsc && copyfiles -u 1 src/**/function.json dist && shx cp host.json dist/host.json",
     "test": "vitest run",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@azure/functions": "^4.8.0"
+    "@azure/functions": "^3.5.1"
   },
   "devDependencies": {
     "@types/node": "^24.5.2",
+    "copyfiles": "^2.4.1",
     "shx": "^0.4.0",
     "typescript": "^5.9.2",
     "vitest": "^3.2.4"

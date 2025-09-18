@@ -2,6 +2,7 @@
 FROM node:20-alpine AS build
 WORKDIR /workspace
 COPY package.json ./
+COPY package-lock.json ./
 RUN npm install
 COPY . .
 RUN npm run build

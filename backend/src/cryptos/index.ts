@@ -1,6 +1,6 @@
-import type { HttpRequest } from "@azure/functions";
+import type { Context, HttpRequest } from "@azure/functions";
 
-export default async function (context: any, req: HttpRequest) {
+export default async function (context: Context, req: HttpRequest) {
   const data = [
     {
       id: "bitcoin",
