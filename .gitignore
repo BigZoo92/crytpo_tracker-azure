@@ -14,3 +14,21 @@ local.settings.json
 # OS
 .DS_Store
 Thumbs.db
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.backup
+.terraform.tfstate.lock.info
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.backup
+.terraform.tfstate.lock.info
+crash.log
+
+# (optionnel) ignore les tfvars si tu y mets des secrets
+# *.tfvars
