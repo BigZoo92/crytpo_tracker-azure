@@ -1,0 +1,16 @@
+# Node/Vite
+node_modules/
+dist/
+.build/
+.temp/
+*.log
+
+# TypeScript
+*.tsbuildinfo
+
+# Azure Functions local
+local.settings.json
+
+# OS
+.DS_Store
+Thumbs.db
