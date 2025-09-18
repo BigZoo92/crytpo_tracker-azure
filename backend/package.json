@@ -8,7 +8,8 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@azure/functions": "^3.5.1"
+    "@azure/functions": "^3.5.1",
+    "undici": "^7.16.0"
   },
   "devDependencies": {
     "@types/node": "^24.5.2",

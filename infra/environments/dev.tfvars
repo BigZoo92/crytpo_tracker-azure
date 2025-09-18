@@ -11,5 +11,5 @@ tags = {
   env     = "dev"
   owner   = "you"
 }
-backend_image  = "ctcdevacr.azurecr.io/ctc-backend:0.1.0"
-frontend_image = "ctcdevacr.azurecr.io/ctc-frontend:0.1.0"
+backend_image  = "ctcdevacr.azurecr.io/ctc-backend:0.1.2"
+frontend_image = "ctcdevacr.azurecr.io/ctc-frontend:0.1.2"
