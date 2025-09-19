@@ -30,6 +30,7 @@ export default async function (context: Context) {
               c.name
             }","change24h":${ch.toFixed(2)},"at":"${new Date().toISOString()}"}`
           );
+          context.log(`INGEST_TIMER_TICK ${new Date().toISOString()}`);
           alertedRecently.set(c.id, now);
         }
       }
