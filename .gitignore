@@ -32,3 +32,4 @@ crash.log
 
 # (optionnel) ignore les tfvars si tu y mets des secrets
 # *.tfvars
+.env

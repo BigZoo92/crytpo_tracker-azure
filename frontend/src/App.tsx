@@ -8,8 +8,7 @@ type Row = {
   trend: string;
 };
 
-const BACKEND =
-  "https://ctc-dev-api.livelyforest-574d229f.westeurope.azurecontainerapps.io";
+const BACKEND = import.meta.env.VITE_API_BASE_URL ?? "";
 
 export default function App() {
   const [rows, setRows] = React.useState<Row[]>([]);

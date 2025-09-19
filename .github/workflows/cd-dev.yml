@@ -46,6 +46,7 @@ jobs:
 
       - name: Build frontend image
         run: |
+          --build-arg VITE_API_BASE_URL=${{ secrets.DEV_API_BASE_URL }} \
           docker build -t ${{ env.FRONTEND_IMAGE }} .
 
       - name: Push frontend image
@@ -66,7 +67,6 @@ jobs:
         run: |
           az extension add --name containerapp --yes || az extension update --name containerapp
 
-      # on s'assure que la Container App connaît les creds ACR (idempotent)
       - name: Set registry on apps (idempotent)
         run: |
           az containerapp registry set -g ${{ env.RG }} -n ${{ env.BACKEND_APP }} \
