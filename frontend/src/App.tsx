@@ -42,8 +42,6 @@ import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 
-// ------------------------------------------------------------------
-
 type Row = {
   id: string;
   name: string;
@@ -55,7 +53,6 @@ type Point = { time: string; price: number };
 
 const BACKEND = import.meta.env.VITE_API_BASE_URL as string;
 
-// Simple theme toggle sans dépendance : ajoute/supprime la classe 'dark' sur <html>
 function ThemeToggle() {
   const [dark, setDark] = React.useState(() =>
     document.documentElement.classList.contains("dark")
@@ -86,7 +83,6 @@ export default function App() {
   const [hLoading, setHLoading] = React.useState(false);
   const [hError, setHError] = React.useState<string | null>(null);
 
-  // Fetch list
   React.useEffect(() => {
     let cancelled = false;
     (async () => {
@@ -106,7 +102,6 @@ export default function App() {
     };
   }, []);
 
-  // Fetch history on selection
   React.useEffect(() => {
     if (!sel) return;
     let cancelled = false;
@@ -191,15 +186,12 @@ export default function App() {
       </header>
 
       <main className="container mx-auto p-4 md:p-6">
-        {/* Erreur globale */}
         {error && (
           <Alert variant="destructive" className="mb-4">
             <AlertTitle>Erreur</AlertTitle>
             <AlertDescription>{error}</AlertDescription>
           </Alert>
         )}
-
-        {/* Stats */}
         <div className="grid gap-4 md:grid-cols-3">
           <Card className="col-span-1">
             <CardHeader className="pb-2">
@@ -259,7 +251,6 @@ export default function App() {
         <Separator className="my-6" />
 
         <div className="grid gap-6 lg:grid-cols-2">
-          {/* Table */}
           <Card className="order-2 lg:order-1">
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between gap-3">
