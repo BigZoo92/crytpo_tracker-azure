@@ -8,7 +8,6 @@ export default async function (context: Context, req: HttpRequest) {
     return;
   }
 
-  // 7 jours, prix en USD
   const url = `https://api.coingecko.com/api/v3/coins/${encodeURIComponent(
     id
   )}/market_chart?vs_currency=usd&days=7`;
@@ -18,7 +17,6 @@ export default async function (context: Context, req: HttpRequest) {
     if (!r.ok) throw new Error(`coingecko HTTP ${r.status}`);
     const json = (await r.json()) as { prices: [number, number][] };
 
-    // map → { time (ISO), price }
     const points = (json.prices || []).map(([ts, price]) => ({
       time: new Date(ts).toISOString(),
       price,
@@ -27,7 +25,7 @@ export default async function (context: Context, req: HttpRequest) {
     context.res = {
       headers: {
         "content-type": "application/json",
-        "access-control-allow-origin": "*", // CORS POC
+        "access-control-allow-origin": "*",
       },
       body: {
         id,

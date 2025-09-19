@@ -7,8 +7,8 @@ type Coin = {
   price_change_percentage_24h: number | null;
 };
 
-const alertedRecently = new Map<string, number>(); // anti-spam léger (mémoire)
-const COOLDOWN_MS = 30 * 60 * 1000; // 30 minutes
+const alertedRecently = new Map<string, number>();
+const COOLDOWN_MS = 30 * 60 * 1000;
 
 export default async function (context: Context) {
   try {

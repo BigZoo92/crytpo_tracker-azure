@@ -3,8 +3,8 @@ location = "westeurope"
 rg_name  = "ctc-dev-rg"
 la_name  = "ctc-dev-la"
 cae_name = "ctc-dev-cae"
-acr_name = "ctcdevacr"    # 5-50 chars, lowercase, unique au sein du tenant
-sa_name  = "ctcdevfuncsa" # 3-24 chars, lowercase, global unique (si pris, ajoute un chiffre)
+acr_name = "ctcdevacr"
+sa_name  = "ctcdevfuncsa"
 
 tags = {
   project = "ctc"
