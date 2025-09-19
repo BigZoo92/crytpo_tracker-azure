@@ -46,8 +46,8 @@ jobs:
 
       - name: Build frontend image
         run: |
-          --build-arg VITE_API_BASE_URL=${{ secrets.DEV_API_BASE_URL }} \
-          docker build -t ${{ env.FRONTEND_IMAGE }} .
+          docker build --build-arg VITE_API_BASE_URL=${{ secrets.DEV_API_BASE_URL }} \
+          -t ${{ env.FRONTEND_IMAGE }} .
 
       - name: Push frontend image
         run: docker push ${{ env.FRONTEND_IMAGE }}
