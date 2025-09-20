@@ -218,14 +218,14 @@ ContainerAppConsoleLogs_CL
 ## 🖼️ Screenshots (à ajouter)
 
 * **Dashboard Web** (table + graphe 7j)
-  `![Dashboard](./docs/images/dashboard.png)`
+  ![Dashboard](docs/images/dashboard.png)
 
 * **Grafana** (panneaux Logs & Alertes)
-  `![Grafana-1](./docs/images/graphana-1.png)`
-  `![Grafana-1](./docs/images/graphana-2.png)`
+  ![Grafana-1](docs/images/graphana-1.png)
+  ![Grafana-1](docs/images/graphana-2.png)
 
 * **Architecture Azure (Terraform)**
-  `![Architecture](./docs/images/terraform.png)`
+  `![Architecture](docs/images/terraform.png)`
 
 ---
 
